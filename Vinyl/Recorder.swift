@@ -46,7 +46,13 @@ extension Recorder {
             $0.encodedTrack()
         }
         
-        let data = try JSONSerialization.data(withJSONObject: jsonWax, options: .prettyPrinted)
+        let data: Data
+        
+        if #available(iOS 11.0, *) {
+            data = try JSONSerialization.data(withJSONObject: jsonWax, options: [.prettyPrinted, .sortedKeys])
+        } else {
+            data = try JSONSerialization.data(withJSONObject: jsonWax, options: .prettyPrinted)
+        }
         file.write(data)
         file.synchronizeFile()
         
